@@ -55,6 +55,7 @@ public class TopicJmsConsumer {
         	}
         	if (context != null) {
         		context.close();
+        		
         	}
         }
     }
