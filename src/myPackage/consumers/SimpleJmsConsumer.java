@@ -23,11 +23,7 @@ public class SimpleJmsConsumer {
     public static void main( String[] args ) throws NamingException {
     	Context namingContext = null;
         JMSContext context = null;
-        
-        // Set up the namingContext for the JNDI lookup
-        // Make sure you create an application user in Wildfly that matches the 
-        // username and password below.  Usually a bad practice to have passwords
-        // in code, but this is just a simple example.
+
         final Properties env = new Properties();
         env.put(Context.INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_FACTORY);
         env.put(Context.PROVIDER_URL, System.getProperty(Context.PROVIDER_URL, PROVIDER_URL));
@@ -35,15 +31,12 @@ public class SimpleJmsConsumer {
         env.put(Context.SECURITY_CREDENTIALS, "guest1");   // password
         
         try {
-	        namingContext = new InitialContext(env);
-	        
+	        namingContext = new InitialContext(env);        
 	        // Use JNDI to look up the connection factory and queue
 	        ConnectionFactory connectionFactory = (ConnectionFactory) namingContext.lookup(CONNECTION_FACTORY);
-	        Destination destination = (Destination) namingContext.lookup(QUEUE_DESTINATION);
-	        
+	        Destination destination = (Destination) namingContext.lookup(QUEUE_DESTINATION);        
 	        // Create a JMS context to use to create consumers
-	        context = connectionFactory.createContext("guest1", "guest1"); // again, don't do this in production
-	        
+	        context = connectionFactory.createContext("guest1", "guest1"); // again, don't do this in production        
 	        // Read a message.  If nothing is there, this will return null
 	        JMSConsumer consumer = context.createConsumer(destination);
 	        String text = consumer.receiveBodyNoWait(String.class);
